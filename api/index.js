@@ -1,8 +1,14 @@
-import express from "express"
-import mongoose from "mongoose"
 import dotenv from "dotenv"
 import path from "path"
 import { fileURLToPath } from "url"
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
+import express from "express"
+import mongoose from "mongoose"
 import userRouter from "../api/routes/user.route.js"
 import userAuth from "../api/routes/auth.route.js"
 import userListing from "../api/routes/listing.route.js"
@@ -21,14 +27,6 @@ import { getLocalityName } from "./utils/locality.js"
 
 
 
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
-
-
-
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log('Connected to mongoDB!!');
     
@@ -38,7 +36,8 @@ mongoose.connect(process.env.MONGO).then(()=>{
 })
 const app = express();
 
-const port = 3001;
+
+const port = process.env.PORT || 3001;
 app.use(express.json({ limit: '10mb' }));
 app.use(cookieParser());
 // Allow multiple origins for development
